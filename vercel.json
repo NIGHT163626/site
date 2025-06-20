@@ -6,18 +6,18 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(Mozilla|Chrome|Safari|Edge|Firefox|Opera|OPR|MSIE|Trident|Brave|Vivaldi|SamsungBrowser|UCBrowser|YaBrowser|CriOS|FxiOS|EdgiOS|Silk).*"
+          "value": ".*Roblox.*"
         }
       ],
-      "dest": "/403.html",
-      "status": 403
-    },
-    {
-      "src": "/",
       "headers": {
         "Content-Type": "text/plain; charset=utf-8"
       },
       "dest": "/script.lua"
+    },
+    {
+      "src": "/",
+      "dest": "/403.html",
+      "status": 403
     }
   ]
 }
