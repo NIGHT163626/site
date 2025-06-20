@@ -31,12 +31,30 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 30px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #667eea;
         }
 
         .stats {
@@ -150,7 +168,22 @@
             color: #6c757d;
         }
 
+        .auth-info {
+            background: #e8f5e8;
+            color: #2d5a2d;
+            padding: 15px;
+            margin: 20px 30px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
         @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
             .header h1 {
                 font-size: 2rem;
             }
@@ -174,8 +207,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🛡️ Dashboard de Segurança</h1>
-            <p>Monitore acessos e eventos de segurança do seu site</p>
+            <div>
+                <h1>🛡️ Dashboard de Segurança</h1>
+                <p>Monitore acessos e eventos de segurança do seu site</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+        </div>
+
+        <div class="auth-info">
+            <strong>🔐 Autenticado com SENHA</strong> - Acesso autorizado às informações de segurança
         </div>
 
         <div class="stats">
@@ -195,7 +235,7 @@
 
         <div class="logs-section">
             <div class="logs-header">
-                <h2>Logs de Segurança</h2>
+                <h2>📋 Logs de Segurança</h2>
                 <button class="btn" onclick="loadLogs()">🔄 Atualizar</button>
             </div>
             
@@ -206,6 +246,25 @@
     </div>
 
     <script>
+        // Verificar autenticação
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                alert('❌ Acesso negado! Redirecionando para login...');
+                window.location.href = '/login.html';
+                return null;
+            }
+            return token;
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('🤔 Tem certeza que deseja sair?')) {
+                localStorage.removeItem('adminToken');
+                window.location.href = '/login.html';
+            }
+        }
+
         function getLogClass(type) {
             switch(type) {
                 case 'VALID_ACCESS': return 'success';
@@ -221,18 +280,26 @@
         }
 
         async function loadLogs() {
+            const token = checkAuth();
+            if (!token) return;
+
             const container = document.getElementById('logsContainer');
-            container.innerHTML = '<div class="loading">Carregando logs...</div>';
+            container.innerHTML = '<div class="loading">🔄 Carregando logs...</div>';
 
             try {
                 const response = await fetch('/api/security-log', {
                     headers: {
-                        'Authorization': 'Bearer your-admin-token-here'
+                        'Authorization': `Bearer ${token}`
                     }
                 });
 
                 if (!response.ok) {
-                    throw new Error('Erro ao carregar logs');
+                    if (response.status === 401) {
+                        alert('🔐 Sessão expirada! Faça login novamente.');
+                        logout();
+                        return;
+                    }
+                    throw new Error(`Erro ${response.status}: ${response.statusText}`);
                 }
 
                 const data = await response.json();
@@ -247,7 +314,7 @@
 
                 // Renderizar logs
                 if (logs.length === 0) {
-                    container.innerHTML = '<div class="loading">Nenhum log encontrado</div>';
+                    container.innerHTML = '<div class="loading">📝 Nenhum log encontrado</div>';
                     return;
                 }
 
@@ -255,23 +322,25 @@
                     <div class="log-entry ${getLogClass(log.type)}">
                         <div class="log-type ${getLogClass(log.type)}">${log.type}</div>
                         <div class="log-details">
-                            <strong>Data:</strong> ${formatDate(log.timestamp)}<br>
-                            <strong>IP:</strong> ${log.ip}<br>
-                            <strong>User-Agent:</strong> ${log.userAgent.substring(0, 80)}...
+                            <strong>📅 Data:</strong> ${formatDate(log.timestamp)}<br>
+                            <strong>🌐 IP:</strong> ${log.ip}<br>
+                            <strong>🔍 User-Agent:</strong> ${log.userAgent.substring(0, 80)}...
                         </div>
                     </div>
                 `).join('');
 
             } catch (error) {
-                container.innerHTML = `<div class="loading">Erro: ${error.message}</div>`;
+                container.innerHTML = `<div class="loading">❌ Erro: ${error.message}</div>`;
+                console.error('Erro ao carregar logs:', error);
             }
         }
 
-        // Carregar logs ao inicializar
-        loadLogs();
-
-        // Auto-refresh a cada 30 segundos
-        setInterval(loadLogs, 30000);
+        // Verificar autenticação e carregar logs
+        if (checkAuth()) {
+            loadLogs();
+            // Auto-refresh a cada 30 segundos
+            setInterval(loadLogs, 30000);
+        }
     </script>
 </body>
 </html>
