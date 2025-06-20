@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/raw", "destination": "/script.js" }
+    { "source": "/raw", "destination": "/script.lua" }
   ],
   "headers": [
     {
