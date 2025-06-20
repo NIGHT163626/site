@@ -14,7 +14,7 @@
         "X-Content-Type-Options": "nosniff",
         "Cache-Control": "no-cache, no-store, must-revalidate"
       },
-      "dest": "/api/roblox-script"
+      "dest": "/script.lua"
     },
     {
       "src": "/login.html",
