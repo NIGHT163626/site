@@ -12,9 +12,10 @@
       "headers": {
         "Content-Type": "text/plain; charset=utf-8",
         "X-Content-Type-Options": "nosniff",
-        "Cache-Control": "no-cache, no-store, must-revalidate"
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache"
       },
-      "dest": "/script.lua"
+      "dest": "/api/secure-script"
     },
     {
       "src": "/login.html",
