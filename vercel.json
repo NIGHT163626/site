@@ -12,10 +12,9 @@
       "headers": {
         "Content-Type": "text/plain; charset=utf-8",
         "X-Content-Type-Options": "nosniff",
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Pragma": "no-cache"
+        "Cache-Control": "no-cache, no-store, must-revalidate"
       },
-      "dest": "/api/secure-script"
+      "dest": "/api/roblox-script"
     },
     {
       "src": "/login.html",
