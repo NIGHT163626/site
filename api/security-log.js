@@ -20,41 +20,34 @@ export default function handler(req, res) {
   const mockLogs = [
     {
       timestamp: new Date(Date.now() - 300000).toISOString(),
-      type: "BYPASS_ATTEMPT",
-      ip: "203.45.67.89",
-      userAgent: "curl/7.68.0",
-      severity: "CRITICAL",
-      details: { suspiciousCount: 3 },
-    },
-    {
-      timestamp: new Date(Date.now() - 240000).toISOString(),
       type: "INVALID_USER_AGENT",
       ip: "192.168.1.100",
       userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      severity: "MEDIUM",
+    },
+    {
+      timestamp: new Date(Date.now() - 240000).toISOString(),
+      type: "RATE_LIMITED",
+      ip: "203.45.67.89",
+      userAgent: "curl/7.68.0",
     },
     {
       timestamp: new Date(Date.now() - 180000).toISOString(),
-      type: "SUSPICIOUS_TIMING",
-      ip: "10.0.0.50",
-      userAgent: "Roblox/WinInet",
-      severity: "HIGH",
-      details: { avgTime: 500, requests: 8 },
-    },
-    {
-      timestamp: new Date(Date.now() - 120000).toISOString(),
       type: "VALID_ACCESS",
       ip: "10.0.0.1",
       userAgent: "Roblox/WinInet",
-      severity: "LOW",
-      details: { hash: "a1b2c3d4e5f6g7h8", processingTime: 45 },
+    },
+    {
+      timestamp: new Date(Date.now() - 120000).toISOString(),
+      type: "INVALID_METHOD",
+      ip: "172.16.0.50",
+      userAgent: "Roblox/WinInet",
+      details: { method: "POST" },
     },
     {
       timestamp: new Date(Date.now() - 60000).toISOString(),
-      type: "RATE_LIMIT_EXCEEDED",
-      ip: "172.16.0.100",
+      type: "VALID_ACCESS",
+      ip: "10.0.0.2",
       userAgent: "RobloxStudio/WinInet",
-      severity: "MEDIUM",
     },
   ]
 
