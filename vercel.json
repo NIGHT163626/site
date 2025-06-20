@@ -20,10 +20,6 @@
       "dest": "/api/validate-and-serve"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
       "src": "/.*",
       "headers": {
         "X-Content-Type-Options": "nosniff",
@@ -35,10 +31,5 @@
       "dest": "/403.html",
       "status": 403
     }
-  ],
-  "functions": {
-    "app/api/validate-and-serve/route.ts": {
-      "maxDuration": 10
-    }
-  }
+  ]
 }
