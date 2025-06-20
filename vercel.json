@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    { "source": "/raw", "destination": "/script.js" }
+  ],
+  "headers": [
+    {
+      "source": "/raw",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+      ]
+    }
+  ]
+}
