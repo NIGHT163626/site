@@ -1,13 +1,23 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/script.lua" }
-  ],
-  "headers": [
+  "routes": [
     {
-      "source": "/",
-      "headers": [
-        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
-      ]
+      "src": "/",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(Mozilla|Chrome|Safari|Edge|Firefox|Opera|OPR|MSIE|Trident|Brave|Vivaldi|SamsungBrowser|UCBrowser|YaBrowser|CriOS|FxiOS|EdgiOS|Silk).*"
+        }
+      ],
+      "status": 403,
+      "dest": "/403.html"
     }
   ]
 }
