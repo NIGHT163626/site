@@ -1,42 +1,51 @@
 {
+  "functions": {
+    "api/validate.js": {
+      "maxDuration": 10
+    }
+  },
   "routes": [
     {
-      "src": "/",
-      "has": [
-        {
-          "type": "header",
-          "key": "user-agent",
-          "value": ".*Roblox.*"
-        }
-      ],
-      "headers": {
-        "Content-Type": "text/plain; charset=utf-8"
-      },
-      "dest": "/script.lua"
+      "src": "/(script\\.lua|raw|download|api/script)?",
+      "dest": "/api/validate.js"
     },
     {
-      "src": "/script.lua",
-      "has": [
-        {
-          "type": "header",
-          "key": "user-agent",
-          "value": ".*Roblox.*"
-        }
-      ],
-      "headers": {
-        "Content-Type": "text/plain; charset=utf-8"
-      },
-      "dest": "/script.lua"
+      "src": "/health",
+      "dest": "/api/health.js"
     },
     {
-      "src": "/script.lua",
-      "dest": "/403.html",
-      "status": 403
-    },
-    {
-      "src": "/",
-      "dest": "/403.html",
-      "status": 403
+      "src": "/(.*)",
+      "dest": "/api/block.js"
     }
-  ]
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "SECRET_KEY": "@secret_key"
+  }
 }
