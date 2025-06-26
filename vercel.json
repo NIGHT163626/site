@@ -15,6 +15,25 @@
       "dest": "/script.lua"
     },
     {
+      "src": "/script.lua",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*Roblox.*"
+        }
+      ],
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8"
+      },
+      "dest": "/script.lua"
+    },
+    {
+      "src": "/script.lua",
+      "dest": "/403.html",
+      "status": 403
+    },
+    {
       "src": "/",
       "dest": "/403.html",
       "status": 403
