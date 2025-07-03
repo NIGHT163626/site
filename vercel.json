@@ -1,45 +1,23 @@
 {
-  "functions": {
-    "api/validate.js": {
-      "maxDuration": 10
-    }
-  },
   "routes": [
     {
-      "src": "/(script\\.lua|raw|download|api/script)?",
-      "dest": "/api/validate.js",
+      "src": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*Roblox.*"
+        }
+      ],
       "headers": {
-        "X-Frame-Options": "DENY",
-        "X-Content-Type-Options": "nosniff",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-XSS-Protection": "1; mode=block",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
-      }
+        "Content-Type": "text/plain; charset=utf-8"
+      },
+      "dest": "/script.lua"
     },
     {
-      "src": "/health",
-      "dest": "/api/health.js",
-      "headers": {
-        "X-Frame-Options": "DENY",
-        "X-Content-Type-Options": "nosniff",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-XSS-Protection": "1; mode=block",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/block.js",
-      "headers": {
-        "X-Frame-Options": "DENY",
-        "X-Content-Type-Options": "nosniff",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "X-XSS-Protection": "1; mode=block",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
-      }
+      "src": "/",
+      "dest": "/403.html",
+      "status": 403
     }
-  ],
-  "env": {
-    "SECRET_KEY": "PoisonBaitola"
-  }
+  ]
 }
